@@ -15,6 +15,7 @@ int printAt(GUI *this, int a);
 int update(GUI *this, int a);
 //int joystick(GUI *this, int a);
 void changegen(GUI *this, int a);
+//void render(GUI *this, int a);
 
 #define initGUI(initPG1, initPG2, pulseUsed){initObject(), initPG1, initPG2, pulseUsed}
 	

@@ -8,9 +8,9 @@
 #include "TinyTimber.h"
 #include "GUI.h"
 #include "PulseGene.h"
+#include "joystick.h"
 #include "init.h"
 #include "Gate.h"
-#include "joystick.h"
 #include <avr/io.h>
 
 // 50% duty cycle, half time on and half time off.

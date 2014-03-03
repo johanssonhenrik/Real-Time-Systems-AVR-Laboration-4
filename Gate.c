@@ -7,5 +7,5 @@
 #define false	0
 
 void Gate(){
-	
+	// Responsible for writing to PORTE, preventing a race condition between the two pulse generators
 }

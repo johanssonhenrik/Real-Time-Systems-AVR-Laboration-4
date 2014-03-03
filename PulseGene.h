@@ -15,6 +15,8 @@ typedef struct {
 void pulseInc(PULSEGEN *this, int a);
 void pulseDec(PULSEGEN *this, int a);
 void SaveValue(PULSEGEN *this, int a);
+void repeat(PULSEGEN* pulse, int incdec);
+//void update_freq(PULSEGEN *this, Joystick *that);
 //void changegen(PULSEGEN *this, int a);
 
 #define initPG(freq,pin,pos,old_value, saved){initObject(),freq,pin,pos, old_value, saved} 

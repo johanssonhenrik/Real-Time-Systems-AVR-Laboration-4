@@ -100,6 +100,11 @@ int update(GUI* self, int a){
 	printAt(self, 1);
 }
 
+//void render(GUI *self, int a){
+	//update(self, 0);
+	//AFTER(MSEC(1000), self, render, 0);
+//}
+
 void changegen(GUI *self, int a){
 	if (self->pulseUsed == 0){
 		//LCDDR16 ^= (1 << 1);	//0x1;		^ = xor -> 0 1 1 0

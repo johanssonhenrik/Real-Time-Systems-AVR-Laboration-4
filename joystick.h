@@ -9,17 +9,15 @@
 
 #include "TinyTimber.h"
 #include "GUI.h"
-#include "PulseGene.h"
 
 typedef struct{
 	Object super;
-	GUI* g;
+	GUI *g;
 	int buttonPrevious;
 } Joystick;
 
-int joystick(Joystick* this);
-void repeat(Joystick* this, PULSEGEN* pulse, int cond);
+int joystick(Joystick *this);
 
 #define initJoy(g, buttonPrevious){initObject(), g, buttonPrevious}
 
-#endif __JOYSTICK_H_/* JOYSTICK_H_ */
+#endif __JOYSTICK_H_

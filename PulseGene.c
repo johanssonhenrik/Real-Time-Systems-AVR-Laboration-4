@@ -10,6 +10,7 @@
 #include <avr/io.h>
 #include <avr/iom169p.h>
 #include "PulseGene.h"
+#include "joystick.h"
 #include "GUI.h"
 
 void pulseInc(PULSEGEN *self, int a){
@@ -26,7 +27,7 @@ void pulseDec(PULSEGEN *self, int a){
 
 void SaveValue(PULSEGEN *self, int a){
 	if(self->saved == 0){
-		self->old_value = self->frequency;	// Ändrar i minnet.
+		self->old_value = self->frequency;
 		self->frequency = 0;
 		self->saved = 1;
 	}else if(self->saved == 1){
@@ -36,3 +37,12 @@ void SaveValue(PULSEGEN *self, int a){
 	}
 }
 
+void repeat(PULSEGEN* pulse, int incordec){
+	if((((PINB >> 6) & 1) == 0 && incordec == 0)){
+		pulseInc(pulse, 0);
+		AFTER(MSEC(500), pulse, repeat, 0);
+	}else if (((PINB >> 7) == 0) && incordec == 1){ 
+		pulseDec(pulse, 1);
+		AFTER(MSEC(500), pulse, repeat, 1);
+	}
+}
