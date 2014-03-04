@@ -9,10 +9,11 @@
 
 #include "TinyTimber.h"
 #include "GUI.h"
+#include "helper.h"
 
 typedef struct{
 	Object super;
-	GUI *g;
+	HELP *g;
 	int buttonPrevious;
 } Joystick;
 

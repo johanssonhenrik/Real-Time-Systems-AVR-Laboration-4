@@ -21,7 +21,11 @@ void init(){
 		PORTB = (1 << PORTB7)|(1 << PORTB6)|(1 << PORTB4) ;
 		PORTE = (1 << PORTE3)|(1 << PORTE2);
 	
-		LCDDR17 = 0x10 | LCDDR16;	//Initial d section lit. 
+		
+		//LCDDR2 = 0x4F | LCDDR2; //Siffran 10 i nedre högra hörnet. LCD Segment.
+		
+		
+		LCDDR17 = 0x10 | LCDDR17;	//Initial d section lit. 
 		/*
 		PORTB = 0xd0; // Enables pin 7(down),6(up),4(middle)
 		PORTE = 0x0c; // Enables pin 3(right),2(left)

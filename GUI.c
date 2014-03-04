@@ -96,79 +96,45 @@ int printAt(GUI *self, int pulseActive){
 }
 
 int update(GUI* self, int a){
-	printAt(self, 0);
-	printAt(self, 1);
+	printAt(self, 0);			//pulseActive 1..
+	printAt(self, 1);			//or 0
 }
 
-//void render(GUI *self, int a){
-	//update(self, 0);
-	//AFTER(MSEC(1000), self, render, 0);
-//}
-
 void changegen(GUI *self, int a){
+	
+	//pulseUsed = 0 -> pulse1, pulseUsed = 1 -> pulse2.
 	if (self->pulseUsed == 0){
+		LCDDR2 = 0x00;
 		//LCDDR16 ^= (1 << 1);	//0x1;		^ = xor -> 0 1 1 0
 		//LCDDR17 ^= (4 << 0);	//0x0;
-		LCDDR17 = 0x10 | LCDDR16;
-		LCDDR16 = 0xFE & LCDDR17;
+		LCDDR17 = 0x10 | LCDDR17;
+		LCDDR16 = 0xFE & LCDDR16;
 		self->pulseUsed = 1;
+		
+		self->pulse1->used = 0;
+		self->pulse2->used = 1;
+		
+		// i gate objectet
+		self->pulse1->gate->pulse1 = 0;
+		self->pulse1->gate->pulse2 = 1;
+		SYNC(self->pulse2, sendtogate, 0);
+		
 	}else if(self->pulseUsed == 1){
+		LCDDR2 = 0x4F | LCDDR2;
 		//LCDDR17 ^= (4 << 1);	//0x10;
 		//LCDDR16 ^= (0 << 1);	//0x0;
-		LCDDR17 = 0xEF & LCDDR16;
-		LCDDR16 = 0x01 | LCDDR17;
+		LCDDR17 = 0xEF & LCDDR17;
+		LCDDR16 = 0x01 | LCDDR16;
 		self->pulseUsed = 0;
+		
+		self->pulse1->used = 1;
+		self->pulse2->used = 0;
+		
+		// i gate objectet
+		self->pulse1->gate->pulse1 = 1;
+		self->pulse1->gate->pulse2 = 0;
+		SYNC(self->pulse1, sendtogate, 0);
+		
 	}
 	//update(self, a);
 }
-
-//int joystick(GUI* self, int a){
-	//int b;
-	//PULSEGEN* pulse;
-	//if(self->pulseUsed == 0){
-		//pulse = self->pulse1;
-		//b = 0;
-	//}else{
-		//pulse = self->pulse2;
-		//b = 1;
-	//}
-	//
-	//if(((PINB >> 6) & 1) == 0 & self->buttonPrevious == 0){
-		//self->buttonPrevious = 1;
-		//}else if(((PINB >> 7) & 1) == 0 & self->buttonPrevious == 0){
-		//self->buttonPrevious = 1;
-		//}else if(((PINB >> 2) & 1) == 0 & self->buttonPrevious == 0){
-		//self->buttonPrevious = 1;
-		//}else if(((PINB >> 3) & 1) == 0 & self->buttonPrevious == 0){
-		//self->buttonPrevious = 1;
-		//}else if(((PINB >> 4) & 1) == 0 & self->buttonPrevious == 0){
-		//self->buttonPrevious = 1;
-	//}
-	//
-	//if (((PINB >> 6) & 1) == 0 & self->buttonPrevious == 1){ // Up
-		//self->buttonPrevious = 0;
-		//ASYNC(pulse, pulseInc, b);	
-	//}
-	//if ((PINB >> 7) == 0 & self->buttonPrevious == 1){
-		//self->buttonPrevious = 0;
-		//ASYNC(pulse, pulseDec, b);					// Down	
-	//}
-	//if (((PINB >> 2) & 1) == 0 & self->buttonPrevious == 1){
-		//self->buttonPrevious = 0;
-		//ASYNC(self, changegen, b);					// Left
-		////changegen(self, b);	
-	//}
-	//if (((PINB >> 3) & 1) == 0 & self->buttonPrevious == 1){
-		//self->buttonPrevious = 0;
-		//ASYNC(self, changegen, b);					// Right
-		////changegen(self, b);
-	//}
-	//if (((PINB >> 4) & 1) == 0 & self->buttonPrevious == 1){
-		//self->buttonPrevious = 0;
-		//ASYNC(pulse, SaveValue, b);					// Middle
-	//}
-	//update(self, a);
-	//return 0;
-//}
-
-// Sätta interrupt hanteraren som ett eget objekt. InterruptHandler
