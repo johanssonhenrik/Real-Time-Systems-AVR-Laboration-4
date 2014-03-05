@@ -18,9 +18,24 @@ void init(){
 		LCDCCR = 0x0F; // 3.35 Volt		
 		TCCR1B = 0x0D; // Clock prescaler set to 1024 and CFC.
 		// Ports
-		PORTB = (1 << PORTB7)|(1 << PORTB6)|(1 << PORTB4) ;
-		PORTE = (1 << PORTE3)|(1 << PORTE2);
+		//PORTB = (1 << PORTB7)|(1 << PORTB6)|(1 << PORTB4);
+		
+		PORTB = (1 << PORTB7) | PORTB;
+		PORTB = (1 << PORTB6) | PORTB;
+		PORTB = (1 << PORTB4) | PORTB;
 	
+		//PORTE = (1 << PORTE3)|(1 << PORTE2);
+		
+		PORTE = (1 << PORTE3) | PORTE;
+		PORTE = (1 << PORTE2) | PORTE;
+	
+		//DDR_OC1A = 1 , sida 108
+		// Sida 70
+		
+		//DDRE = (1 << DDE3) | (1 << DDE2);
+		
+		DDRE = (1 << DDE3) | DDRE;
+		DDRE = (1 << DDE2) | DDRE;
 		
 		//LCDDR2 = 0x4F | LCDDR2; //Siffran 10 i nedre högra hörnet. LCD Segment.
 		

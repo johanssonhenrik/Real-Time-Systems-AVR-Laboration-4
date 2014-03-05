@@ -17,7 +17,6 @@ void repeat(HELP* self, int incordec){
 	}else{
 		pulse = self->gui->pulse2;
 	}
-
 	if(self->firstpress){
 		self->firstpress = 0;
 		AFTER(MSEC(1000), self, repeat, 0);	

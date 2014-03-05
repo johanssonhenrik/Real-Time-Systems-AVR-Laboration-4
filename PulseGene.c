@@ -40,13 +40,14 @@ void SaveValue(PULSEGEN *self, int a){
 }
 
 void sendtogate(PULSEGEN *self){
+	
 
 	if(self->used == 1){
 		if(self->frequency != 0){
 			SYNC(self->gate,Gate,0);
-			AFTER(MSEC(2000/(self->frequency)),self,sendtogate,0);
+			AFTER(MSEC(2000/(self->frequency)),self,sendtogate,0);   //OBS FIXA AFTER TID.
 		}
-	}else{
+	}else{				//Pulse
 		return 0;
 	}
 }

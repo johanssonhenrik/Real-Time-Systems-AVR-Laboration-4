@@ -13,7 +13,7 @@
 #include <util/delay.h>
 #include <avr/iom169p.h>
 
-int joystick(Joystick* self){
+int joystickPORTD(Joystick* self){
 	PULSEGEN* pulse;
 	
 	if(self->buttonPrevious == 1) {
@@ -42,18 +42,28 @@ int joystick(Joystick* self){
 		//ASYNC(pulse, repeat, 1);
 		ASYNC(self->g, repeat, 1);
 		
-	} else if (((PINE >> 2) & 1) == 0 && self->g->gui->pulseUsed == 1){
-		self->buttonPrevious = 1;
-		ASYNC(self->g->gui, changegen, 0);				// Left
-		
-	} else if (((PINE >> 3) & 1) == 0 && self->g->gui->pulseUsed == 0){
-		self->buttonPrevious = 1;
-		ASYNC(self->g->gui, changegen, 0);				// Right
-		
 	} else if (((PINB >> 4) & 1) == 0){
 		self->buttonPrevious = 1;
 		ASYNC(pulse, SaveValue, 0);					// Middle
 	}
 	ASYNC(self->g->gui, update, 0);
 	return 0;
+}
+
+int joystickPORTE(Joystick *self){
+	
+	if(self->buttonPrevious == 1) {
+		self->buttonPrevious = 0;
+		return 0;
+	}
+	if (((PINE >> 2) & 1) == 0 && self->g->gui->pulseUsed == 1){
+		self->buttonPrevious = 1;
+		ASYNC(self->g->gui, changegen, 0);				// Left->Right
+	}else if (((PINE >> 3) & 1) == 0 && self->g->gui->pulseUsed == 0){
+		self->buttonPrevious = 1;
+		ASYNC(self->g->gui, changegen, 0);				// Right->Left
+	}
+	ASYNC(self->g->gui, update, 0);
+	return 0;
+	
 }

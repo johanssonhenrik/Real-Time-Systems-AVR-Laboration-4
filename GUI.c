@@ -96,8 +96,8 @@ int printAt(GUI *self, int pulseActive){
 }
 
 int update(GUI* self, int a){
-	printAt(self, 0);			//pulseActive 1..
-	printAt(self, 1);			//or 0
+	printAt(self, 0);			//pulseActive 0..
+	printAt(self, 1);			//or 1
 }
 
 void changegen(GUI *self, int a){
@@ -115,8 +115,8 @@ void changegen(GUI *self, int a){
 		self->pulse2->used = 1;
 		
 		// i gate objectet
-		self->pulse1->gate->pulse1 = 0;
-		self->pulse1->gate->pulse2 = 1;
+		self->pulse1->gate->writepulseleft = 0;
+		self->pulse1->gate->writepulseright = 1;
 		SYNC(self->pulse2, sendtogate, 0);
 		
 	}else if(self->pulseUsed == 1){
@@ -131,8 +131,8 @@ void changegen(GUI *self, int a){
 		self->pulse2->used = 0;
 		
 		// i gate objectet
-		self->pulse1->gate->pulse1 = 1;
-		self->pulse1->gate->pulse2 = 0;
+		self->pulse1->gate->writepulseleft = 1;
+		self->pulse1->gate->writepulseright = 0;
 		SYNC(self->pulse1, sendtogate, 0);
 		
 	}
