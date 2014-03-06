@@ -4,36 +4,30 @@
 #include <avr/iom169p.h>
 #include <avr/portpins.h>
 
+/*
+(Gate) Responsible for writing to PORTE,
+preventing a race condition between
+the two pulse generators.
+*/
+
 void Gate(GATE *self){
-	// Responsible for writing to PORTE, preventing a race condition between the two pulse generators
-		
+
+	//LCDDR2 = 0x4F | LCDDR2;
 	if(self->writepulseleft == 1){
-		if(((PORTE >> 4) & 1) == 1){
-				PORTE = (0 << PORTE4) & PORTE;		
-			}else{									
-				PORTE = (1 << PORTE4) | PORTE;		
+		if(((PORTE >> 4) & 1) == 1){		//OBS MAYBE PORTE >> 4
+			PORTE ^= 0x10;					//PORTE = (0 << PORTE4) & PORTE;
+			self->writepulseleft = 0;
+		}else{										
+			PORTE ^= 0x10;					//PORTE = (1 << PORTE4) | PORTE;
+			self->writepulseleft = 0;
 		}
 	}else if(self->writepulseright == 1){
-		if(((PORTE >> 6) & 1) == 1){
-			PORTE = (0 << PORTE6) & PORTE;
+		if(((PORTE >> 6) & 1) == 1){		//OBS MAYBE PORTE >> 6
+			PORTE ^= 0x40;					//PORTE = (0 << PORTE6) & PORTE;
+			self->writepulseright = 0;
 		}else{
-			PORTE = (1 << PORTE6) | PORTE;
+			PORTE ^= 0x40;					//PORTE = (1 << PORTE6) | PORTE;
+			self->writepulseright = 0;
 		}
 	}
-	
-	//if(self->writepulseleft == 1){
-		//if(((PINE >> 4) & 1) == 1){
-			//PINE = (0 << PINE4) & PINE;
-			//}else{
-			//PINE = (1 << PINE4) | PINE;
-		//}
-		//}else if(self->writepulseright == 1){
-		//if(((PINE >> 6) & 1) == 1){
-			//PINE = (0 << PIN6) & PINE;
-			//}else{
-			//PINE = (1 << PINE6) | PINE;
-		//}
-	//}
-	
-	// LÄS SIDA 57
 }

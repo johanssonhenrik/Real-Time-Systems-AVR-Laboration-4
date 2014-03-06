@@ -17,7 +17,7 @@ typedef struct{
 	int buttonPrevious;
 } Joystick;
 
-int joystickPORTD(Joystick *this);
+int joystickPORTB(Joystick *this);
 int joystickPORTE(Joystick *this);
 
 #define initJoy(g, buttonPrevious){initObject(), g, buttonPrevious}

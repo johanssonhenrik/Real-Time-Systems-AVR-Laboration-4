@@ -96,45 +96,33 @@ int printAt(GUI *self, int pulseActive){
 }
 
 int update(GUI* self, int a){
-	printAt(self, 0);			//pulseActive 0..
-	printAt(self, 1);			//or 1
+	printAt(self, 0);									//pulseActive 0..
+	printAt(self, 1);									//or 1
 }
 
 void changegen(GUI *self, int a){
 	
-	//pulseUsed = 0 -> pulse1, pulseUsed = 1 -> pulse2.
-	if (self->pulseUsed == 0){
-		LCDDR2 = 0x00;
-		//LCDDR16 ^= (1 << 1);	//0x1;		^ = xor -> 0 1 1 0
+	if(self->pulseUsed == 0){							//To check where we are. Move from current pulse to the next.
+		//LCDDR2 = 0x00;								//default pulseUsed = 1. (pulse2)
+		//LCDDR16 ^= (1 << 1);	//0x1;
 		//LCDDR17 ^= (4 << 0);	//0x0;
 		LCDDR17 = 0x10 | LCDDR17;
 		LCDDR16 = 0xFE & LCDDR16;
 		self->pulseUsed = 1;
 		
-		self->pulse1->used = 0;
-		self->pulse2->used = 1;
-		
-		// i gate objectet
-		self->pulse1->gate->writepulseleft = 0;
-		self->pulse1->gate->writepulseright = 1;
+		self->pulse1->gate->writepulseleft = 0;			//Used in (Gate.c) for checking which pulse is allowed to write to PORTE.
+		self->pulse2->gate->writepulseright = 1;
 		SYNC(self->pulse2, sendtogate, 0);
 		
 	}else if(self->pulseUsed == 1){
-		LCDDR2 = 0x4F | LCDDR2;
-		//LCDDR17 ^= (4 << 1);	//0x10;
-		//LCDDR16 ^= (0 << 1);	//0x0;
+		//LCDDR2 = 0x4F | LCDDR2;						//Print segment (10), Lower Right Corner.
 		LCDDR17 = 0xEF & LCDDR17;
 		LCDDR16 = 0x01 | LCDDR16;
 		self->pulseUsed = 0;
 		
-		self->pulse1->used = 1;
-		self->pulse2->used = 0;
-		
-		// i gate objectet
-		self->pulse1->gate->writepulseleft = 1;
-		self->pulse1->gate->writepulseright = 0;
+		self->pulse1->gate->writepulseleft = 1;			
+		self->pulse2->gate->writepulseright = 0;
 		SYNC(self->pulse1, sendtogate, 0);
-		
 	}
 	//update(self, a);
 }

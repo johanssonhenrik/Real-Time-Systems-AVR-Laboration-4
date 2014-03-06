@@ -23,7 +23,7 @@ void repeat(HELP* self, int incordec){
 	}
 	if((((PINB >> 6) & 1) == 0 && incordec == 0)){ // Up
 		//pulseInc(pulse, 0);
-		SYNC(pulse, pulseInc, 0);
+		SYNC(pulse, pulseInc, 0); 
 		SYNC(self->gui, update, 0);
 		AFTER(MSEC(400), self, repeat, 0);
 	}else if (((PINB >> 7) == 0) && incordec == 1){ // Down
