@@ -10,13 +10,12 @@
 #include "PulseGene.h"
 #include <avr/interrupt.h>
 #include <avr/io.h>
-#include <util/delay.h>
 #include <avr/iom169p.h>
 
-int joystickPORTD(Joystick* self){
+int joystickPORTB(Joystick* self){
 	PULSEGEN* pulse;
 	
-	if(self->buttonPrevious == 1) {
+	if(self->buttonPrevious == 1){
 		self->buttonPrevious = 0;
 		return 0;
 	}
@@ -26,42 +25,34 @@ int joystickPORTD(Joystick* self){
 		pulse = self->g->gui->pulse2;
 	}
 	
-	if (((PINB >> 6) & 1) == 0){ 
+	if (((PINB >> 6) & 1) == 0){				//Up
 		self->buttonPrevious = 1;
-		//ASYNC(pulse, pulseInc, 0);					// Up
-		//ASYNC(self->g, repeat, 0);
-		//ASYNC(pulse, repeat, 0);
 		self->g->firstpress = 1;
 		ASYNC(self->g, repeat, 0);
-		self->g->firstpress = 0;
 		
-		
-	} else if ((PINB >> 7) == 0){
-		self->buttonPrevious = 1;
-		//ASYNC(pulse, pulseDec, 0);					// Down
-		//ASYNC(pulse, repeat, 1);
+	}else if (((PINB >> 7) & 1) == 0){			//Down
+		self->buttonPrevious = 1;														
 		ASYNC(self->g, repeat, 1);
 		
-	} else if (((PINB >> 4) & 1) == 0){
+	}else if (((PINB >> 4) & 1) == 0){
 		self->buttonPrevious = 1;
-		ASYNC(pulse, SaveValue, 0);					// Middle
+		ASYNC(pulse, SaveValue, 0);						
 	}
 	ASYNC(self->g->gui, update, 0);
 	return 0;
 }
 
 int joystickPORTE(Joystick *self){
-	
-	if(self->buttonPrevious == 1) {
+	if(self->buttonPrevious == 1){
 		self->buttonPrevious = 0;
 		return 0;
 	}
-	if (((PINE >> 2) & 1) == 0 && self->g->gui->pulseUsed == 1){
+	if(((PINE >> 2) & 1) == 0 && self->g->gui->pulseUsed == 1){
 		self->buttonPrevious = 1;
-		ASYNC(self->g->gui, changegen, 0);				// Left->Right
+		ASYNC(self->g->gui, changegen, 0);									//Left->Right
 	}else if (((PINE >> 3) & 1) == 0 && self->g->gui->pulseUsed == 0){
 		self->buttonPrevious = 1;
-		ASYNC(self->g->gui, changegen, 0);				// Right->Left
+		ASYNC(self->g->gui, changegen, 0);									//Right->Left
 	}
 	ASYNC(self->g->gui, update, 0);
 	return 0;

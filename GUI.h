@@ -10,9 +10,9 @@ typedef struct {
 } GUI;
 
 //int writeChar(GUI *this, int a);
-int writeChar(GUI *this, int pp, int freq);
-int printAt(GUI *this, int a);
-int update(GUI *this, int a);
+void writeChar(GUI *this, int pp, int freq);
+void printAt(GUI *this, int a);
+void update(GUI *this, int a);
 //int joystick(GUI *this, int a);
 void changegen(GUI *this, int a);
 //void render(GUI *this, int a);

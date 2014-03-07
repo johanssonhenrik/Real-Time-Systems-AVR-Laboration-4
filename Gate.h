@@ -9,7 +9,7 @@ typedef struct {
 	int pulseguard;
 }GATE;
 
-void Gate(GATE *this);
+void Gate(GATE *this, int whichpulse);
 
 #define initGATE(writepulseleft, writepulseright, pulseguard){initObject(), writepulseleft, writepulseright ,pulseguard}
 

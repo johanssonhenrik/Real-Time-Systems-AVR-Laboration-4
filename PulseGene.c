@@ -14,16 +14,19 @@
 
 void pulseInc(PULSEGEN *self, int a){
 	if(self->frequency < 99){
-		self->frequency = self->frequency + 1;
+		if(self->frequency == 0){
+			self->frequency = self->frequency + 1;
+			sendtogate(self);
+		}else{
+			self->frequency = self->frequency + 1;
+		}
 	}
-	return 0;
 }
 
 void pulseDec(PULSEGEN *self, int a){
 	if(self->frequency > 0){
 		self->frequency = self->frequency - 1;
 	}
-	return 0;
 }
 
 void SaveValue(PULSEGEN *self, int a){
@@ -35,19 +38,14 @@ void SaveValue(PULSEGEN *self, int a){
 		self->frequency = self->old_value;
 		self->old_value = 0;
 		self->saved = 0;
+		sendtogate(self);
 	}
-	return 0;
 }
 
 void sendtogate(PULSEGEN *self){
-	
-
-	if(self->used == 1){
-		if(self->frequency != 0){
-			SYNC(self->gate,Gate,0);
-			AFTER(MSEC(2000/(self->frequency)),self,sendtogate,0);   //OBS FIXA AFTER TID.
-		}
-	}else{				//Pulse
-		return 0;
+	if(self->frequency > 0){										//Send to Gate for PortE-write if frequency > 0.
+		SYNC(self->gate, Gate, self->whichpulse);
+		AFTER(MSEC(2000/(self->frequency)), self, sendtogate, 0);	//Check AFTER Time.
 	}
+	
 }
